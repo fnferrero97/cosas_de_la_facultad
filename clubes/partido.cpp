@@ -1,4 +1,5 @@
 ﻿#include "partido.h"
+#include <iomanip>
 
 
 Partido::Partido(Equipo local, Equipo visitante){
@@ -7,7 +8,8 @@ Partido::Partido(Equipo local, Equipo visitante){
 }
 
 void Partido::mostrarInfo(){
-    std::cout << this->getLocal().getNombre() << " vs. " << this->getVisitante().getNombre() << "\n";
+    std::cout << std::right <<std::setw(25) << this->getLocal().getNombre() << "  -- vs. --  "
+    << std::left << std::setw(25)<< this->getVisitante().getNombre() << "\n";
 }
 
 Equipo& Partido::getLocal(){

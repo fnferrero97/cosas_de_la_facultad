@@ -7,28 +7,26 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-    string nombres[] = {"Argentinos Jrs.",
-                        "Banfield",
-                        "Belgrano",
-                        "Boca",
-                        "Dep. Espaniol",
-                        "Estudiantes (LP)",
-                        "Ferro",
+    string nombres[] = {"Platense",
                         "Gimnasia (LP)",
-                        "Huracan",
+                        "Tigre",
+                        "Banfield",
+                        "Estudiantes (LP)",
                         "Independiente",
-                        "Lanus",
                         "Newells",
-                        "Platense",
-                        "Racing Club",
                         "River",
-                        "Rosario Central",
-                        "San Lorenzo",
-                        "Velez",
+                        "Union",
+                        "Argentinos",
+                        "Boca",
+                        "Huracan",
+                        "Racing",
+                        "Sarmiento (J)",
                         "Colon",
-                        "Gimnasia y Tiro",
-                        "San Martin (T)",
-                        "Union"};
+                        "Barracas Central",
+                        "Velez",
+                        "Def. y Justicia",
+                        "Lanus",
+                        "San Lorenzo"};
     Liga ligaArg;
 
     for(int i = 0; i < 20; i++){
@@ -37,6 +35,7 @@ int main(int argc, char *argv[]){
     }
 
     //ligaArg.mostrarEquipos();
+    cout << "\n";
 
     ligaArg.generarFechas();
 

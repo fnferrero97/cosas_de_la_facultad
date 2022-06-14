@@ -1,4 +1,5 @@
 ﻿#include "liga.h"
+#include <iomanip>
 
 Liga::Liga(){}
 
@@ -12,40 +13,37 @@ void Liga::agregarFecha(Fecha fecha){
 }
 
 void Liga::generarFechas(){
+    int cantidadEquipos;
 
-    if(cantEquipos % 2 != 0){
+    if(this->getCantEquipos() % 2 != 0){
         this->equipos.emplace_back("LIBRE", 99);
-        this->cantEquipos++;
+        cantidadEquipos = this->cantEquipos;
+        this->cantFechas = this->getCantEquipos() * 2;
+    } else {
+        this->cantFechas = (this->getCantEquipos() - 1) * 2;
+        cantidadEquipos = this->cantEquipos-1;
     }
 
-    this->cantFechas = (this->getCantEquipos() - 1) * 2;
-    this->cantPartidos = ((this->getCantEquipos() / 2) * 2) - 1;
+    this->cantPartidos = this->getCantEquipos() / 2;
 
     for (int i = 0; i < this->cantFechas; i++){
         Fecha fecha(i+1);
-
-        for (int j = 0; j <= this->cantPartidos; j+=2){
-            if (i%2 == 0){
-                Partido partido(this->equipos[j], this->equipos[j+1]);
-                fecha.agregarPartido(partido);
-            } else {
-                Partido partido(this->equipos[j+1], this->equipos[j]);
-                fecha.agregarPartido(partido);
+        for (int j = 0; j < this->cantPartidos; j++){
+            int local = (i + j) % cantidadEquipos;
+            int visitante = (i - j + cantidadEquipos) % cantidadEquipos;
+            if(j == 0){
+                visitante = cantidadEquipos;
+                }
+                if (i%2 == 0){
+                    Partido partido(this->equipos[local], this->equipos[visitante]);
+                    fecha.agregarPartido(partido);
+                } else {
+                    Partido partido(this->equipos[visitante], this->equipos[local]);
+                    fecha.agregarPartido(partido);
+                }
             }
-
-        }
-
-        for (int k = this->getCantEquipos()-1; k > 1; k--){
-            Equipo aux(this->equipos[k - 1].getNombre(), this->equipos[k -1].getId());
-            this->equipos[k-1] = this->equipos[k];
-            this->equipos[k] = aux;
-        }
-
         this->fechas.push_back(fecha);
-
-
     }
-
 
 }
 
@@ -57,10 +55,10 @@ void Liga::mostrarEquipos(){
 
 void Liga::mostrarFechas(){
     for (size_t i = 0; i < this->fechas.size(); i++){
-        std::cout << "Fecha nro: " << this->fechas[i].getNroFecha() << "\n";
-        std::cout << "#######################\n";
+        std::cout << "                         Fecha nro: " << this->fechas[i].getNroFecha() << "\n";
+        std::cout << "#####################################################################\n";
         this->fechas[i].mostrarFecha();
-        std::cout << "#######################\n\n";
+        std::cout << "#####################################################################\n\n";
     }
 }
 
