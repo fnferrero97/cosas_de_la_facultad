@@ -14,6 +14,8 @@ void Liga::agregarFecha(Fecha fecha){
 
 void Liga::generarFechas(){
     int cantidadEquipos;
+    int local;
+    int visitante;
 
     if(this->getCantEquipos() % 2 != 0){
         this->equipos.emplace_back("LIBRE", 99);
@@ -29,22 +31,19 @@ void Liga::generarFechas(){
     for (int i = 0; i < this->cantFechas; i++){
         Fecha fecha(i+1);
         for (int j = 0; j < this->cantPartidos; j++){
-            int local = (i + j) % cantidadEquipos;
-            int visitante = (i - j + cantidadEquipos) % cantidadEquipos;
-            if(j == 0){
-                visitante = cantidadEquipos;
-                }
-                if (i%2 == 0){
-                    Partido partido(this->equipos[local], this->equipos[visitante]);
-                    fecha.agregarPartido(partido);
-                } else {
-                    Partido partido(this->equipos[visitante], this->equipos[local]);
-                    fecha.agregarPartido(partido);
-                }
+            Partido partido;
+            local = (i + j) % cantidadEquipos;
+            visitante = (i - j + cantidadEquipos) % cantidadEquipos;
+
+            if(j == 0) visitante = cantidadEquipos;
+
+            i%2 == 0 ? partido.setEquipos(this->equipos[local], this->equipos[visitante]) :
+                       partido.setEquipos(this->equipos[visitante], this->equipos[local]);
+
+            fecha.agregarPartido(partido);
             }
         this->fechas.push_back(fecha);
     }
-
 }
 
 void Liga::mostrarEquipos(){
