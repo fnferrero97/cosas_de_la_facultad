@@ -107,6 +107,7 @@ private:
 
     NodoArbolBinario<T>* insertarRecursivo(T ndato, NodoArbolBinario<T>* nodo){
         if (!nodo){
+          //nodo == nullptr
             return new NodoArbolBinario(ndato);
         } else if (ndato < nodo->getDato()){
             nodo->setIzquierda(insertarRecursivo(ndato, nodo->getIzquierda()));
@@ -175,7 +176,7 @@ void limpiar(){
 }
 
 void agregar(T ndato){
-    this->raiz = this->insertarIterativo(ndato, this->getRaiz());
+    this->raiz = this->insertarRecursivo(ndato, this->getRaiz());
 }
 
 friend std::ostream& operator<<(std::ostream& os, ArbolBinario<T>& arbol){
