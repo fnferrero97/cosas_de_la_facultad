@@ -17,6 +17,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     arbolbinario.h \
+    cola.h \
     nodoarbolbinario.h \
+    nodocola.h \
     nodopila.h \
     pila.h

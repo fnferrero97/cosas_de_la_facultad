@@ -4,6 +4,7 @@
 #include <ostream>
 #include "nodoarbolbinario.h"
 #include "pila.h"
+#include "cola.h"
 
 template <class T>
 class ArbolBinario{
@@ -47,13 +48,8 @@ private:
                  aux = pila.obtener_pila();
                  os << aux->getDato() << " -- ";
 
-                 if (aux->getDerecha() != nullptr){
-                     pila.alta_pila(aux->getDerecha());
-                 }
-
-                 if (aux->getIzquierda() != nullptr){
-                     pila.alta_pila(aux->getIzquierda());
-                 }
+                 if (aux->getDerecha() != nullptr) pila.alta_pila(aux->getDerecha());
+                 if (aux->getIzquierda() != nullptr) pila.alta_pila(aux->getIzquierda());
              }
          }
          return os;
@@ -105,6 +101,23 @@ private:
          return os;
     }
 
+    std::ostream& mostrarIterativoPorNiveles(std::ostream& os, NodoArbolBinario<T>* nodo){
+        NodoArbolBinario<T>* aux;
+        Cola<NodoArbolBinario<T>*> cola;
+
+        cola.alta(nodo);
+
+        while(!cola.vacia()){
+            aux = cola.obtener();
+            os << aux->getDato() << " -- ";
+
+            if(aux->getIzquierda() != nullptr) cola.alta(aux->getIzquierda());
+            if(aux->getDerecha() != nullptr) cola.alta(aux->getDerecha());
+        }
+
+        return os;
+    }
+
     NodoArbolBinario<T>* insertarRecursivo(T ndato, NodoArbolBinario<T>* nodo){
         if (!nodo){
           //nodo == nullptr
@@ -152,6 +165,71 @@ private:
         }
     }
 
+    NodoArbolBinario<T>* valorMinimo(NodoArbolBinario<T>* nodo){
+        NodoArbolBinario<T>* aux = nodo;
+
+        while (aux->getIzquierda() != nullptr){
+            aux = aux->getIzquierda();
+        }
+        return aux;
+    }
+
+    NodoArbolBinario<T>* valorMaximo(NodoArbolBinario<T>* nodo){
+        NodoArbolBinario<T>* aux = nodo;
+
+        while (aux->getDerecha() != nullptr){
+            aux = aux->getDerecha();
+        }
+        return aux;
+    }
+
+    NodoArbolBinario<T>* eliminarRecursivo(T dato, NodoArbolBinario<T>* nodo){
+
+        if (this->existe(dato)){
+            if (nodo == nullptr) {
+                return nodo;
+            } else if (dato < nodo->getDato()){
+                nodo->setIzquierda(eliminarRecursivo(dato, nodo->getIzquierda()));
+            } else if (dato > nodo->getDato()){
+                nodo->setDerecha(eliminarRecursivo(dato, nodo->getDerecha()));
+            } else if (dato == nodo->getDato()){
+                NodoArbolBinario<T>* aux;
+                if(nodo->getIzquierda() == nullptr){
+                    aux = nodo->getDerecha();
+                    delete nodo;
+                    return aux;
+                } else if (nodo->getDerecha() == nullptr){
+                    aux = nodo->getIzquierda();
+                    delete nodo;
+                    return aux;
+                } else {
+//                   Minimo valor del sub-arbol derecho
+                    aux = this->valorMinimo(nodo->getDerecha());
+                    nodo->setDato(aux->getDato());
+                    nodo->setDerecha(eliminarRecursivo(aux->getDato(), nodo->getDerecha()));
+
+//                  Maximo valor del sub-arbol izquierdo
+//                  aux = this->valorMaximo(nodo->getIzquierda());
+//                  nodo->setDato(aux->getDato());
+//                  nodo->setIzquierda(eliminarRecursivo(aux->getDato(), nodo->getIzquierda()));
+                }
+            }
+        } else {
+            std::cout << "El valor " << dato << " no existe en el arbol.\n";
+        }
+        return nodo;
+    }
+
+    bool existe(T dato){
+        NodoArbolBinario<T>* aux = this->raiz;
+
+        while (aux != nullptr && aux->getDato() != dato) {
+            dato < aux->getDato() ? aux = aux->getIzquierda() : aux = aux->getDerecha();
+        }
+
+        return aux != nullptr;
+    }
+
     void destruirNodo(NodoArbolBinario<T>* nodo){
         if(nodo != nullptr){
             destruirNodo(nodo->getIzquierda());
@@ -160,37 +238,123 @@ private:
         }
     }
 
+    int calcularNodosIterativo(NodoArbolBinario<T>* nodo){
+        int contador = 0;
+        NodoArbolBinario<T>* aux = nodo;
+        Pila<NodoArbolBinario<T>*> pila;
+
+         if(aux != nullptr){
+             pila.alta_pila(aux);
+             while(!pila.pila_vacia()){
+                 aux = pila.obtener_pila();
+                 contador++;
+                 if (aux->getDerecha() != nullptr) pila.alta_pila(aux->getDerecha());
+                 if (aux->getIzquierda() != nullptr) pila.alta_pila(aux->getIzquierda());
+             }
+         }
+        return contador;
+    }
+
+    int calcularHojasRecursivo(NodoArbolBinario<T>* nodo){
+        int contador = 0;
+        if (nodo != nullptr){
+
+        if (nodo->getIzquierda() == nullptr && nodo->getDerecha() == nullptr) return 1;
+        contador += calcularHojasRecursivo(nodo->getIzquierda());
+        contador += calcularHojasRecursivo(nodo->getDerecha());
+        }
+        return contador;
+    }
+
+    int calcularHojasIterativo(NodoArbolBinario<T>* nodo){
+        int contador = 0;
+        NodoArbolBinario<T>* aux = nodo;
+        Pila<NodoArbolBinario<T>*> pila;
+
+         if(aux != nullptr){
+             pila.alta_pila(aux);
+             while(!pila.pila_vacia()){
+                 aux = pila.obtener_pila();
+                 if (aux->getDerecha() != nullptr) pila.alta_pila(aux->getDerecha());
+                 if (aux->getIzquierda() != nullptr) pila.alta_pila(aux->getIzquierda());
+                 if (aux->getIzquierda() == nullptr && aux->getDerecha() == nullptr) contador++;
+             }
+         }
+        return contador;
+    }
+
+    int calcularAlturaRecursiva(NodoArbolBinario<T>* nodo){
+        int a = 0;
+        int b = 0;
+
+        if (nodo == nullptr) return 0;
+        if (nodo->getIzquierda() == nullptr && nodo->getDerecha() == nullptr){
+            return 1;
+        } else {
+            if (nodo->getIzquierda() != nullptr) a = 1 + calcularAlturaRecursiva(nodo->getIzquierda());
+            if (nodo->getDerecha() != nullptr)   b = 1 + calcularAlturaRecursiva(nodo->getDerecha());
+        }
+        return a >= b ? a : b;
+    }
+
 public:
 
-ArbolBinario(){
-    this->raiz = nullptr;
-}
-
-~ArbolBinario(){
-    this->limpiar();
-}
-
-void limpiar(){
-    this->destruirNodo(this->getRaiz());
-    this->raiz = nullptr;
-}
-
-void agregar(T ndato){
-    this->raiz = this->insertarRecursivo(ndato, this->getRaiz());
-}
-
-friend std::ostream& operator<<(std::ostream& os, ArbolBinario<T>& arbol){
-    if(arbol.getRaiz() != nullptr){
-        return arbol.mostrarIterativoInOrder(os, arbol.getRaiz());
-    } else {
-        os << "El arbol esta vacio.\n";
-        return os;
+    ArbolBinario(){
+        this->raiz = nullptr;
     }
-}
 
-NodoArbolBinario<T>* getRaiz() const{
-    return this->raiz;
-}
+    ~ArbolBinario(){
+        this->limpiar();
+    }
+
+    void limpiar(){
+        this->destruirNodo(this->getRaiz());
+        this->raiz = nullptr;
+    }
+
+    void agregar(T ndato){
+        this->raiz = this->insertarRecursivo(ndato, this->getRaiz());
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, ArbolBinario<T>& arbol){
+        if(arbol.getRaiz() != nullptr){
+            return arbol.mostrarIterativoPorNiveles(os, arbol.getRaiz());
+        } else {
+            os << "El arbol esta vacio.\n";
+            return os;
+        }
+    }
+
+    int calcularNodos(){
+        return this->calcularNodosIterativo(this->raiz);
+    }
+
+    int calcularAltura(){
+       return this->calcularAlturaRecursiva(this->raiz);
+    }
+
+    int calcularHojas(){
+        return this->calcularHojasIterativo(this->raiz);
+    }
+
+    const T& getMinimo(){
+        NodoArbolBinario<T>* minimo = this->valorMinimo(this->raiz);
+        return minimo->getDato();
+    }
+
+    const T& getMaximo(){
+        NodoArbolBinario<T>* maximo = this->valorMaximo(this->raiz);
+        return maximo->getDato();
+    }
+
+    void eliminarValor(T dato){
+        this->raiz = this->eliminarRecursivo(dato, this->raiz);
+    }
+
+    NodoArbolBinario<T>* getRaiz() const{
+        return this->raiz;
+    }
+
 
 };
 
