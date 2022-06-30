@@ -1,8 +1,0 @@
-*/ Integrantes
-
-Pablo Beckmann
-Facundo Ferrero
-Joaquín Martínez
-
-
-/*
