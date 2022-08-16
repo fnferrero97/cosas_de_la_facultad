@@ -26,7 +26,7 @@ private:
              os << nodo->getDato() << " - ";
              mostrar(os, nodo->getDerecha());
          }
-         return os;
+         return os; 
     }
 
     std::ostream& mostrarRecursivoPostOrder(std::ostream& os, NodoArbolBinario<T>* nodo){
@@ -192,7 +192,7 @@ private:
                 nodo->setIzquierda(eliminarRecursivo(dato, nodo->getIzquierda()));
             } else if (dato > nodo->getDato()){
                 nodo->setDerecha(eliminarRecursivo(dato, nodo->getDerecha()));
-            } else if (dato == nodo->getDato()){
+            } else {
                 NodoArbolBinario<T>* aux;
                 if(nodo->getIzquierda() == nullptr){
                     aux = nodo->getDerecha();
@@ -203,7 +203,7 @@ private:
                     delete nodo;
                     return aux;
                 } else {
-//                   Minimo valor del sub-arbol derecho
+//                  Minimo valor del sub-arbol derecho
                     aux = this->valorMinimo(nodo->getDerecha());
                     nodo->setDato(aux->getDato());
                     nodo->setDerecha(eliminarRecursivo(aux->getDato(), nodo->getDerecha()));
@@ -228,6 +228,16 @@ private:
         }
 
         return aux != nullptr;
+    }
+
+    NodoArbolBinario<T>* buscarNodo(T dato){
+        NodoArbolBinario<T>* aux = this->raiz;
+
+        while (aux != nullptr && aux->getDato() != dato) {
+            dato < aux->getDato() ? aux = aux->getIzquierda() : aux = aux->getDerecha();
+        }
+
+        return aux;
     }
 
     void destruirNodo(NodoArbolBinario<T>* nodo){
@@ -258,10 +268,9 @@ private:
     int calcularHojasRecursivo(NodoArbolBinario<T>* nodo){
         int contador = 0;
         if (nodo != nullptr){
-
-        if (nodo->getIzquierda() == nullptr && nodo->getDerecha() == nullptr) return 1;
-        contador += calcularHojasRecursivo(nodo->getIzquierda());
-        contador += calcularHojasRecursivo(nodo->getDerecha());
+            if (nodo->getIzquierda() == nullptr && nodo->getDerecha() == nullptr) return 1;
+            contador += calcularHojasRecursivo(nodo->getIzquierda());
+            contador += calcularHojasRecursivo(nodo->getDerecha());
         }
         return contador;
     }
@@ -297,6 +306,25 @@ private:
         return a >= b ? a : b;
     }
 
+    bool completo(NodoArbolBinario<T>* nodo){
+        Cola<NodoArbolBinario<T>*> cola;
+        bool bandera = true;
+
+        if (nodo != nullptr){
+            cola.alta(nodo);
+            while (!cola.vacia() && bandera){
+                nodo = cola.obtener();
+                if (nodo->getIzquierda() != nullptr && nodo->getDerecha() != nullptr){
+                    cola.alta(nodo->getIzquierda());
+                    cola.alta(nodo->getDerecha());
+                } else if ((nodo->getIzquierda() != nullptr && nodo->getDerecha() == nullptr) || (nodo->getIzquierda() == nullptr && nodo->getDerecha() != nullptr)) {
+                    bandera = false;
+                }
+            }
+        }
+        return bandera;
+    }
+
 public:
 
     ArbolBinario(){
@@ -323,6 +351,61 @@ public:
             os << "El arbol esta vacio.\n";
             return os;
         }
+    } 
+
+    void eliminarHojasEn0(){
+        NodoArbolBinario<T>* aux = this->raiz;
+        NodoArbolBinario<T>* padre;
+        Pila<NodoArbolBinario<T>*> pila;
+
+        if (aux != nullptr){
+            pila.alta_pila(aux);
+            while (!pila.pila_vacia()){
+                padre = aux;
+                aux = pila.obtener_pila();
+
+                if ((aux->getIzquierda() == nullptr && aux->getDerecha() == nullptr) && aux->getDato() == 0){
+                    delete aux;
+                    padre->getDerecha == 0 ? padre->setDerecha(nullptr) : padre->setIzquierda(nullptr);
+                }
+
+                if (aux->getDerecha() != nullptr) pila.alta_pila(aux->getDerecha());
+                if (aux->getIzquierda() != nullptr) pila.alta_pila(aux->getIzquierda());
+            }
+        }
+     }
+
+    int cantidadNodosDescendientes(int codigo){
+        NodoArbolBinario<T>* nodo = this->buscarNodo(codigo);
+        return this->calcularNodosIterativo(nodo) - 1;
+    }
+
+    void completarArbol(){
+        if (!this->completo(this->raiz)){
+           NodoArbolBinario<T>* aux = this->raiz;
+           NodoArbolBinario<T>* padre;
+           Pila<NodoArbolBinario<T>*> pila;
+
+           if (aux != nullptr){
+               pila.alta_pila(aux);
+                while (!pila.pila_vacia()){
+                   padre = aux;
+                   aux = pila.obtener_pila();
+
+                   if (aux->getIzquierda() == nullptr && aux->getDerecha() == nullptr){
+                       if ((padre->getDerecha() != nullptr && padre->getIzquierda() == nullptr) || (padre->getDerecha() == nullptr && padre->getIzquierda() != nullptr))
+                          this->agregar(aux->getDato() + padre->getDato());
+                   }
+
+                   if (aux->getDerecha() != nullptr) pila.alta_pila(aux->getDerecha());
+                   if (aux->getIzquierda() != nullptr) pila.alta_pila(aux->getIzquierda());
+               }
+           }
+        }
+    }
+
+    void estaCompleto(){
+       this->completo(this->raiz) ? std::cout << "Esta COMPLETO\n" : std::cout << "Esta IMCOMPLETO\n";
     }
 
     int calcularNodos(){
