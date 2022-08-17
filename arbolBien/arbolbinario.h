@@ -297,13 +297,76 @@ private:
         int b = 0;
 
         if (nodo == nullptr) return 0;
-        if (nodo->getIzquierda() == nullptr && nodo->getDerecha() == nullptr){
-            return 1;
-        } else {
+        if (nodo->getIzquierda() == nullptr && nodo->getDerecha() == nullptr) return 1;
+        else {
             if (nodo->getIzquierda() != nullptr) a = 1 + calcularAlturaRecursiva(nodo->getIzquierda());
             if (nodo->getDerecha() != nullptr)   b = 1 + calcularAlturaRecursiva(nodo->getDerecha());
         }
         return a >= b ? a : b;
+    }
+
+//    if (nodo == nullptr) return 0;
+
+//    NodoArbolBinario<T>* aux = nodo;
+//    Cola<NodoArbolBinario<T>*> cola;
+//    int altura = 0;
+//    int cantNodos;
+//    int tamanioCola = 0;
+
+//    cola.alta(aux);
+//    tamanioCola++;
+
+//    while(1){
+//        cantNodos = tamanioCola;
+//        if(cantNodos == 0) return altura;
+//        altura++;
+
+//        while(cantNodos > 0){
+//            aux = cola.obtener();
+//            tamanioCola--;
+//            if (aux->getIzquierda() != nullptr){
+//                cola.alta(aux->getIzquierda());
+//                tamanioCola++;
+//            }
+//            if (aux->getDerecha() != nullptr){
+//                cola.alta(aux->getDerecha());
+//                tamanioCola++;
+//            }
+//            cantNodos--;
+
+    int calcularAlturaIterativa(NodoArbolBinario<T>* nodo){
+        int altura = 0;
+
+        if (nodo == nullptr) return altura;
+
+        NodoArbolBinario<T>* aux = nodo;
+        Cola<NodoArbolBinario<T>*> cola;
+        int tamanioCola = 0;
+        int cantNodos;
+
+        cola.alta(aux);
+        tamanioCola++;
+
+        while (!cola.vacia()){
+            altura++;
+            cantNodos = tamanioCola;
+
+            while (cantNodos > 0){
+                aux = cola.obtener();
+                tamanioCola--;
+                cantNodos--;
+
+                if (aux->getIzquierda() != nullptr) {
+                    cola.alta(aux->getIzquierda());
+                    tamanioCola++;
+                }
+                if (aux->getDerecha() != nullptr) {
+                    cola.alta(aux->getDerecha());
+                    tamanioCola++;
+                }
+            }
+        }
+        return altura;
     }
 
     bool completo(NodoArbolBinario<T>* nodo){
@@ -346,7 +409,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, ArbolBinario<T>& arbol){
         if(arbol.getRaiz() != nullptr){
-            return arbol.mostrarIterativoPorNiveles(os, arbol.getRaiz());
+            return arbol.mostrarIterativoPostOrder(os, arbol.getRaiz());
         } else {
             os << "El arbol esta vacio.\n";
             return os;
@@ -413,7 +476,7 @@ public:
     }
 
     int calcularAltura(){
-       return this->calcularAlturaRecursiva(this->raiz);
+       return this->calcularAlturaIterativa(this->raiz);
     }
 
     int calcularHojas(){

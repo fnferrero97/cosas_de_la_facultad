@@ -3,22 +3,36 @@
 int main(int argc, char *argv[]){
 
     ArbolBinario<int> arbol;
+    ArbolBinario<int> arbol2;
 //  Agregar esta de forma iterativa
     arbol.agregar(10);
-    arbol.agregar(20);
     arbol.agregar(5);
+    arbol.agregar(20);
     arbol.agregar(4);
+    arbol.agregar(6);
     arbol.agregar(15);
+    arbol.agregar(35);
+    arbol.agregar(2);
+
+    for (int i = 0; i<8;i++){
+        arbol2.agregar(i+1);
+    }
 
     std::cout << arbol << ".\n";
+    std::cout << "ALTURA: " << arbol.calcularAltura() << "\n";
 
-    //std::cout << arbol.cantidadNodosDescendientes(5) << "\n";
+    std::cout << "//////////////////\n";
 
-    arbol.estaCompleto();
+    std::cout << arbol2 << ".\n";
+    std::cout << "ALTURA: " << arbol2.calcularAltura() << "\n";
 
-    arbol.completarArbol();
-    std::cout << arbol << ".\n";
-    arbol.estaCompleto();
+//  std::cout << arbol.cantidadNodosDescendientes(5) << "\n";
+
+//  arbol.estaCompleto();
+
+//  arbol.completarArbol();
+//  std::cout << arbol << ".\n";
+//  arbol.estaCompleto();
 
 //    std::cout << "Altura: " << arbol.calcularAltura() << "\n";
 //    std::cout << "Nodos: " << arbol.calcularNodos() << "\n";
