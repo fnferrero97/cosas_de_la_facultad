@@ -1,60 +1,29 @@
-﻿#include "arbolbinario.h"
+﻿#include "arbolavl.h"
 #include <iostream>
+
 int main(int argc, char *argv[]){
 
-    ArbolBinario<int> arbol;
-    ArbolBinario<int> arbol2;
-//  Agregar esta de forma iterativa
-    arbol.agregar(10);
-    arbol.agregar(5);
-    arbol.agregar(20);
-    arbol.agregar(4);
-    arbol.agregar(6);
-    arbol.agregar(15);
-    arbol.agregar(35);
-    arbol.agregar(2);
+    arbolAVL<int> avl;
 
-    for (int i = 0; i<8;i++){
-        arbol2.agregar(i+1);
-    }
+    avl.agregar(3);
+    avl.agregar(21);
+    avl.agregar(30);
+    avl.agregar(11);
+    avl.agregar(13);
+    avl.agregar(22);
+    avl.agregar(15);
+    avl.agregar(8);
+    avl.agregar(24);
+    avl.agregar(16);
+    avl.agregar(32);
+    avl.agregar(25);
 
-    std::cout << arbol << ".\n";
-    std::cout << "ALTURA: " << arbol.calcularAltura() << "\n";
-
-    std::cout << "//////////////////\n";
-
-    std::cout << arbol2 << ".\n";
-    std::cout << "ALTURA: " << arbol2.calcularAltura() << "\n";
-
-//  std::cout << arbol.cantidadNodosDescendientes(5) << "\n";
-
-//  arbol.estaCompleto();
-
-//  arbol.completarArbol();
-//  std::cout << arbol << ".\n";
-//  arbol.estaCompleto();
-
-//    std::cout << "Altura: " << arbol.calcularAltura() << "\n";
-//    std::cout << "Nodos: " << arbol.calcularNodos() << "\n";
-//    std::cout << "MAX: " << arbol.getMaximo() << "\n";
-//    std::cout << "MIN: " << arbol.getMinimo() << "\n";
-//    std::cout << arbol.calcularHojas() << " hojas. \n";
-//    std::cout << "---------------------------\n";
-
-//    arbol.eliminarValor(5);
-
-//    std::cout << arbol << ".\n";
-//    std::cout << "Altura: " << arbol.calcularAltura() << "\n";
-//    std::cout << "Nodos: " << arbol.calcularNodos() << "\n";
-//    std::cout << "MAX: " << arbol.getMaximo() << "\n";
-//    std::cout << "MIN: " << arbol.getMinimo() << "\n";
-//    std::cout << arbol.calcularHojas() << " hojas. \n";
-//    std::cout << "---------------------------\n";
+    std::cout << "ALTURA: " << avl.calcularAltura() << "\n";
+    std::cout << "MINIMO: " << avl.getMinimo() << "\n";
+    std::cout << "MAXIMO: " << avl.getMaximo() << "\n";
 
 
-//    std::cout << "DESPUES DE LIMPIAR\n";
-//    arbol.limpiar();
-//    std::cout << arbol;
+    avl.mostarHorizontal2D(avl.getRaiz(), 2);
 
     return 0;
 }

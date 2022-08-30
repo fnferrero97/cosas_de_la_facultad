@@ -388,6 +388,12 @@ private:
         return bandera;
     }
 
+    int nodosPorNiveles(NodoArbolBinario<T>* nodo, int nivel){
+        if (nodo == nullptr) return 0;
+        if (nivel == 0) return 1;
+        return nodosPorNiveles(nodo->getIzquierda(), nivel - 1) + nodosPorNiveles(nodo->getDerecha(), nivel - 1);
+    }
+
 public:
 
     ArbolBinario(){
@@ -409,7 +415,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, ArbolBinario<T>& arbol){
         if(arbol.getRaiz() != nullptr){
-            return arbol.mostrarIterativoPostOrder(os, arbol.getRaiz());
+            return arbol.mostrarIterativoPreOrder(os, arbol.getRaiz());
         } else {
             os << "El arbol esta vacio.\n";
             return os;
@@ -471,6 +477,10 @@ public:
        this->completo(this->raiz) ? std::cout << "Esta COMPLETO\n" : std::cout << "Esta IMCOMPLETO\n";
     }
 
+    int nodosPorNivel(int nivel){
+        return this->nodosPorNiveles(this->raiz, nivel);
+    }
+
     int calcularNodos(){
         return this->calcularNodosIterativo(this->raiz);
     }
@@ -503,8 +513,6 @@ public:
 
 
 };
-
-//inorde
 
 #endif // ARBOLBINARIO_H
 

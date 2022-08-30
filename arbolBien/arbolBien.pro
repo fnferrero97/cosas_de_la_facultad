@@ -16,6 +16,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    arbolavl.h \
     arbolbinario.h \
     cola.h \
     nodoarbolbinario.h \
