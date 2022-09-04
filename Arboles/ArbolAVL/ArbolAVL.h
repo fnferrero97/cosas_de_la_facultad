@@ -68,6 +68,49 @@ private:
       return y;
     }
 
+    NodoArbolBinarioBusqueda<U>* eliminarRecursivo(U dato, NodoArbolBinarioBusqueda<U>* nodo){
+        if (this->existe(dato)){
+            if (nodo == nullptr) {
+                return nodo;
+            } else if (dato < nodo->getDato()){
+                nodo->setIzquierda(eliminarRecursivo(dato, nodo->getIzquierda()));
+            } else if (dato > nodo->getDato()){
+                nodo->setDerecha(eliminarRecursivo(dato, nodo->getDerecha()));
+            } else {
+                NodoArbolBinarioBusqueda<U>* aux;
+                if(nodo->getIzquierda() == nullptr){
+                    aux = nodo->getDerecha();
+                    delete nodo;
+                    return aux;
+                } else if (nodo->getDerecha() == nullptr){
+                    aux = nodo->getIzquierda();
+                    delete nodo;
+                    return aux;
+                } else {
+                    aux = this->valorMinimo(nodo->getDerecha());
+                    nodo->setDato(aux->getDato());
+                    nodo->setDerecha(eliminarRecursivo(aux->getDato(), nodo->getDerecha()));
+                }
+            }
+        } else {
+            std::cout << "El valor " << dato << " no existe en el arbol.\n";
+        }
+
+        int dA = calcularBalance(nodo);
+
+        if (dA == 2 && calcularBalance(nodo->getIzquierda()) >= 0){
+            return this->rotacionDerecha(nodo);
+        } else if (dA == 2 && calcularBalance(nodo->getIzquierda()) == -1){
+                   nodo->setIzquierda(this->rotacionIzquierda(nodo->getIzquierda()));
+                   return this->rotacionDerecha(nodo);
+        } else if (dA == 2 && calcularBalance(nodo->getDerecha()) <= 0){
+            return this->rotacionIzquierda(nodo);
+        } else if (dA == 2 && calcularBalance(nodo->getDerecha()) == 1){
+            nodo->setDerecha(this->rotacionDerecha(nodo->getDerecha()));
+            return this->rotacionIzquierda(nodo);
+        }
+        return nodo;
+    }
 
 public:
     ArbolAVL(){
@@ -88,9 +131,9 @@ public:
         }
     }
 
-//    void eliminarValor(T dato){
-//        this->raiz = this->eliminarRecursivo(dato, this->raiz);
-//    }
+    void eliminar(U dato){
+        this->raiz = this->eliminarRecursivo(dato, this->raiz);
+    }
 
 };
 

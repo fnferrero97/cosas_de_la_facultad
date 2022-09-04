@@ -5,15 +5,14 @@
 #include <PilaDinamica/PilaDinamica.h>
 
 
-int main(int argc, char *argv[]){
+int main(){
 
     ArbolB<int> ab(2);
-    ArbolAVL<int> avl;
+    ArbolBinarioBusqueda<int>* avl = new ArbolAVL<int>;
     ArbolBinarioBusqueda<int> abb;
     PilaDinamica<int> pD;
     ColaDinamica<int> cL;
 
-    abb.agregar(5);
     abb.agregar(5);
     abb.agregar(20);
     abb.agregar(10);
@@ -22,20 +21,23 @@ int main(int argc, char *argv[]){
     abb.agregar(21);
     abb.agregar(30);
 
-    std::cout << abb << "\n";
+    abb.mostrar(15);
 
     std::cout << "-----------------------------------\n";
     std::cout << "-----------------------------------\n";
 
-    avl.agregar(10);
-    avl.agregar(20);
-    avl.agregar(5);
-    avl.agregar(4);
-    avl.agregar(25);
-    avl.agregar(21);
-    avl.agregar(30);
+    avl->agregar(10);
+    avl->agregar(20);
+    avl->agregar(5);
+    avl->agregar(4);
+    avl->agregar(25);
+    avl->agregar(21);
+    avl->agregar(30);
+    avl->eliminar(10);
+    avl->eliminar(5);
+    avl->eliminar(21);
 
-    std::cout << avl << "\n";
+    avl->mostrar(10);
 
     return 0;
 }

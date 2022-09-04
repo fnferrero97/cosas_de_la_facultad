@@ -185,7 +185,7 @@ private:
         return aux;
     }
 
-    NodoArbolBinarioBusqueda<T>* eliminarRecursivo(T dato, NodoArbolBinarioBusqueda<T>* nodo){
+    virtual NodoArbolBinarioBusqueda<T>* eliminarRecursivo(T dato, NodoArbolBinarioBusqueda<T>* nodo){
 
         if (this->existe(dato)){
             if (nodo == nullptr) {
@@ -364,6 +364,23 @@ private:
         return nodosPorNiveles(nodo->getIzquierda(), nivel - 1) + nodosPorNiveles(nodo->getDerecha(), nivel - 1);
     }
 
+    void mostarHorizontal2D(NodoArbolBinarioBusqueda<T>* raiz, int cantEspacios) {
+        if (raiz == nullptr) return;
+
+        cantEspacios += ESPACIO;
+        mostarHorizontal2D(raiz->getDerecha(), cantEspacios);
+
+        std::cout << "\n";
+
+        for (int i = ESPACIO; i < cantEspacios; i++){
+          std::cout << " "; // 5.1
+        }
+
+        std::cout << raiz->getDato()<< "\n";
+
+        mostarHorizontal2D(raiz->getIzquierda(), cantEspacios);
+      }
+
 public:
 
     ArbolBinarioBusqueda(){
@@ -379,7 +396,7 @@ public:
         this->raiz = nullptr;
     }
 
-    void agregar(T ndato){
+    void virtual agregar(T ndato){
         this->raiz = this->insertarRecursivo(ndato, this->getRaiz());
     }
 
@@ -473,7 +490,7 @@ public:
         return maximo->getDato();
     }
 
-    void eliminarValor(T dato){
+    void eliminar(T dato){
         this->raiz = this->eliminarRecursivo(dato, this->raiz);
     }
 
@@ -485,22 +502,10 @@ public:
         this->raiz = raiz;
     }
 
-    void mostarHorizontal2D(NodoArbolBinarioBusqueda<T>* raiz, int cantEspacios) {
-        if (raiz == nullptr) return;
+    void mostrar(int cantEspacios){
+        this->mostarHorizontal2D(this->raiz, cantEspacios);
+    }
 
-        cantEspacios += ESPACIO;
-        mostarHorizontal2D(raiz->getDerecha(), cantEspacios);
-
-        std::cout << "\n";
-
-        for (int i = ESPACIO; i < cantEspacios; i++){
-          std::cout << " "; // 5.1
-        }
-
-        std::cout << raiz->getDato()<< "\n";
-
-        mostarHorizontal2D(raiz->getIzquierda(), cantEspacios);
-      }
 
     template <class U>
     friend class ArbolAVL;

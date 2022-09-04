@@ -21,7 +21,7 @@ public:
         this->hijos = new NodoArbolB<T>*[2 * cantTotalClaves];
 
         this->cantActualClaves = 0;
-    };
+    }
 
     void recorrer(){
         int i;
