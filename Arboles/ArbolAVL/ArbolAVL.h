@@ -103,9 +103,9 @@ private:
         } else if (dA == 2 && calcularBalance(nodo->getIzquierda()) == -1){
                    nodo->setIzquierda(this->rotacionIzquierda(nodo->getIzquierda()));
                    return this->rotacionDerecha(nodo);
-        } else if (dA == 2 && calcularBalance(nodo->getDerecha()) <= 0){
+        } else if (dA == -2 && calcularBalance(nodo->getDerecha()) <= 0){
             return this->rotacionIzquierda(nodo);
-        } else if (dA == 2 && calcularBalance(nodo->getDerecha()) == 1){
+        } else if (dA == -2 && calcularBalance(nodo->getDerecha()) == 1){
             nodo->setDerecha(this->rotacionDerecha(nodo->getDerecha()));
             return this->rotacionIzquierda(nodo);
         }
