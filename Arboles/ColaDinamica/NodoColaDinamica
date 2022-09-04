@@ -1,0 +1,32 @@
+﻿#ifndef NodoColaDinamicaDinamica_H
+#define NodoColaDinamicaDinamica_H
+
+template <class T>
+class NodoColaDinamica{
+private:
+    T dato;
+    NodoColaDinamica* link = nullptr;
+public:
+    NodoColaDinamica(){}
+
+    NodoColaDinamica(T dato){
+        this->dato = dato;
+    }
+
+    const T& getDato() const{
+        return this->dato;
+    }
+
+    void setDato(const T& dato){
+        this->dato = dato;
+    }
+
+    NodoColaDinamica* getLink() const{
+        return this->link;
+    }
+
+    void setLink(NodoColaDinamica* link){
+        this->link = link;
+    }
+};
+#endif // NodoColaDinamicaDinamica_H
