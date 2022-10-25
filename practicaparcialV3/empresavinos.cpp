@@ -14,7 +14,6 @@ bool comparaAnio(vinoGeneral* v1, vinoGeneral* v2){
     return (v1->getAnioProduccion() > v2->getAnioProduccion()) || ((v1->getAnioProduccion() == v2->getAnioProduccion()) && (v1->getTipo() > v2->getTipo()));
 }
 
-
 empresaVinos::empresaVinos(){}
 
 void empresaVinos::generarArchivo(){
@@ -125,5 +124,6 @@ void empresaVinos::anioMasLitrosYMontos(){
     std::cout << "El anio que se puede vender mas vino es: " << mejorAnio + offset << ".\n";
     std::cout << "El anio que se puede obtener el mayor monto es: " << mejorAnio + offset << ".\n";
 }
+
 
 
