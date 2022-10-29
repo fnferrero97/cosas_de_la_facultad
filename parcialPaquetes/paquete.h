@@ -24,6 +24,7 @@ public:
     void setVersion(int version);
     const std::vector<Paquete*> &getDependencias() const;
     bool noTieneDependencias();
+    bool noTieneTransitiva();
     friend std::ostream& operator<<(std::ostream&, Paquete*&);
 };
 

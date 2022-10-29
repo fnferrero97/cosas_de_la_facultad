@@ -45,6 +45,10 @@ void Empresa::generarArchivos(){
     strcpy_s(dependencia.codigoPaqueteDependencia, codigos[0]);
     archivoDependencias.write(reinterpret_cast<char*>(&dependencia), sizeof(Dependenciastr));
 
+    strcpy_s(dependencia.codigoPaquete, codigos[4]);
+    strcpy_s(dependencia.codigoPaqueteDependencia, codigos[7]);
+    archivoDependencias.write(reinterpret_cast<char*>(&dependencia), sizeof(Dependenciastr));
+
 
     archivoPaquetes.close();
     archivoDependencias.close();
@@ -107,9 +111,13 @@ void Empresa::escribirDepedenciasPaquete(Paquete* paquete){
 
 
 std::vector<Paquete*> Empresa::cincoMasDependencia(){
+    std::vector<Paquete*> sinDependencias;
     std::vector<Paquete*> cincoMas;
-    sort(this->paquetes.begin(), this->paquetes.end(), [](Paquete* p1, Paquete* p2){return p1->getDependencias().size() > p2->getDependencias().size();});
-    copy(this->paquetes.begin(), this->paquetes.begin() + 5, std::back_inserter(cincoMas));
+
+    std::copy_if(this->paquetes.begin(), this->paquetes.end(), std::back_inserter(sinDependencias), [](Paquete* p1){return p1->noTieneTransitiva();});
+
+    sort(sinDependencias.begin(), sinDependencias.end(), [](Paquete* p1, Paquete* p2){return p1->getDependencias().size() > p2->getDependencias().size();});
+    copy(sinDependencias.begin(), sinDependencias.begin() + 5, std::back_inserter(cincoMas));
 
     return cincoMas;
 }

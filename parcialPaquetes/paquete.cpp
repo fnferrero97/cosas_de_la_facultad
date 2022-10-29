@@ -45,6 +45,15 @@ bool Paquete::noTieneDependencias(){
     return this->dependencias.size() == 0;
 }
 
+bool Paquete::noTieneTransitiva(){
+
+    for (size_t i = 0; i < this->dependencias.size(); i++){
+        if (!this->dependencias[i]->noTieneDependencias()) return false;
+    }
+
+    return true;
+}
+
 std::ostream& operator<<(std::ostream& os, Paquete*& otroPaquete){
     os << otroPaquete->getNombre() << "\n";
 
